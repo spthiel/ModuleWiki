@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+{% block title %}{{ module.name }} // {{ element.name }}{% endblock %}
+
+{% block header %}
+    {{ element.name }} <small>// {{ element.type.name }} // {{ module.name }}</small>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h2><code>{{ element.extendedName }}</code></h2>
+        <dl class="pair-description">
+            {% if element.category is defined %}
+            <dt>Category</dt>
+            <dd><a href="{{ path('moduleListElement', {"module": module.name, "type": element.type.name}) }}#{{ element.type.name | lower }}">Calculations</a></dd>
+            {% endif %}
+            <dt>Added in</dt>
+            <dd><a href="{{ path('moduleChangelog', {"module": module.name}) }}#{{ element.since.name }}">{{ element.since.name }}</a></dd>
+        </dl>
+        <div>
+            {{ element.description | escape("html") | markdown_to_html }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block navigation %}
+    {% for type in module.types %}
+        {% set href = path("moduleListElement", {"module": module.name, "type": type.name})%}
+        {% set title = type.name %}
+        {{ block("navigation_item") }}
+    {% endfor %}
+{% endblock %}

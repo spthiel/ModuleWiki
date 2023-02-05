@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="{{ asset('build/images/icon.svg') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body {{ stimulus_controller('expander') }}>
+        <nav class="navigation">
+            <h1 class="navigation__brand">{%- block header -%}{%- endblock -%}</h1>
+            <div class="navigation__links">
+                {% block navigation %}{% endblock %}
+            </div>
+        </nav>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>
+
+{% if false %}
+    {%- block navigation_item -%}
+        <a href="{{ href }}">{{ title }}</a>
+    {%- endblock -%}
+{% endif %}

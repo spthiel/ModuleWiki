@@ -1,0 +1,68 @@
+{% extends "base.html.twig" %}
+{% block title %}{{ module.name }} // {{ type.name }}{% endblock %}
+
+{% block header %}
+    {{ module.name }} {{ type.name }} <small>// {{ module.elementsByType(type) | length }} in total</small>
+{% endblock %}
+
+{% block body %}
+    <form class="section">
+        <input type="search" placeholder="What are you looking for..." name="search">
+        <label>Up to version:</label>
+        <select name="version" id="version">
+            {% for version in module.versions %}
+                <option value="{{ version.id }}">{{ version.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Filter">
+    </form>
+    {% set categories = module.elementsByTypeAndCategories(type) %}
+    {% if (categories | length != 0) and (categories | length != 1) or (categories[""] is not defined) %}
+        <div class="section">
+            <span>Categories:</span>
+            {% for category in module.elementsByTypeAndCategories(type) | keys %}
+                <a href="#{{ category | lower }}">{{ category }}</a> {% if not loop.last %}|{% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div>
+        {% if categories[""] is defined %}
+            {% set group = categories[""] %}
+            {{ block("group") }}
+        {% endif %}
+        {% for categoryname in categories | keys %}
+            {% if categoryname != "" %}
+                <div>
+                    <div>
+                        <h2 id="{{ categoryname | lower }}">{{ categoryname }}</h2>
+                    </div>
+                    {% set group = categories[categoryname] %}
+                    {{ block("group") }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block navigation %}
+    {% for type in module.types %}
+        {% set href = path("moduleListElement", {"module": module.name, "type": type.name})%}
+        {% set title = type.name %}
+        {{ block("navigation_item") }}
+    {% endfor %}
+{% endblock %}
+
+{% block group %}
+    <div class="table table--faked">
+        <div class="row row--head">
+            <div class="cell" style="width: 40%">Name</div>
+            <div class="cell" style="width: 60%">Description</div>
+        </div>
+        {% for element in group %}
+            <a href="{{ path('moduleShowElement', {"module": module.name, "type": element.type.name, "element": element.name}) }}" class="row">
+                <div class="cell">{{ element.extendedName }}</div>
+                <div class="cell">{{ element.shortDescription }}</div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
