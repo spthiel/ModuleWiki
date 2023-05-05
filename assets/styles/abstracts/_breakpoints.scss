@@ -1,0 +1,14 @@
+
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 640px;
+
+// Small tablets (portrait view)
+$screen-md-min: 780px;
+
+// Tablets and small desktops
+$screen-lg-min: 1000px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+$breakpoints: ("sm": $screen-sm-min, "md": $screen-md-min, "lg": $screen-lg-min, "xl": $screen-xl-min);

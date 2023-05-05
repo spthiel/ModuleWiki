@@ -1,0 +1,164 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    {%- if type == 'range' or type == 'color' -%}
+        {# Attribute "required" is not supported #}
+        {%- set required = false -%}
+    {%- endif -%}
+    {%- if type != 'hidden' -%}
+        <label class="text-input">
+            <input data-controller="touched" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %} placeholder=" "/>
+            <span class="line">
+                <span class="name">{{ block('form_label_name') }}{% if required %}<span class="required-asterisk">*</span>{% endif %}</span>
+            </span>
+        </label>
+    {%- else -%}
+        <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {%- endif -%}
+{%- endblock form_widget_simple -%}
+
+{%- block form_label_name -%}
+    {% if not compound -%}
+        {% set label_attr = label_attr|merge({'for': id}) %}
+    {%- endif -%}
+    {% if required -%}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+    {%- endif -%}
+    {% if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = "form.field." ~ name %}
+        {%- endif -%}
+    {%- endif -%}
+    {%- if translation_domain is same as(false) -%}
+        {%- if label_html is same as(false) -%}
+            {{- label -}}
+        {%- else -%}
+            {{- label|raw -}}
+        {%- endif -%}
+    {%- else -%}
+        {%- if label_html is same as(false) -%}
+            {{- label|trans(label_translation_parameters, translation_domain) -}}
+        {%- else -%}
+            {{- label|trans(label_translation_parameters, translation_domain)|raw -}}
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_label_name -%}
+
+{%- block form_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_errors(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block parent_attr -%}
+    {%- for key, value in parent_attr -%}
+        {{key}}="{{value}}"
+    {%- endfor -%}
+{%- endblock parent_attr -%}
+
+{%- block textarea_widget -%}
+    <div class="comp-textarea">
+        <label class="textarea-input">
+            <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+            <span class="name">{{ block('form_label_name') }}{% if required %}<span class="required-asterisk">*</span>{% endif %}</span>
+        </label>
+    </div>
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget -%}
+
+    {% if multiple %}
+        {{- block('choice_multiple_widget') -}}
+    {% else %}
+        <div class="comp-choice">
+            <label class="choice-input">
+                {% if expanded %}
+                    {{- block('choice_widget_expanded') -}}
+                {% else %}
+                    {%- if required and placeholder is none and not placeholder_in_choices and (attr.size is not defined or attr.size <= 1) -%}
+                        {% set required = false %}
+                    {%- endif -%}
+                    <select {{ block('widget_attributes') }}>
+                        {%- if placeholder is not none -%}
+                            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+                        {%- endif -%}
+                        {%- if preferred_choices|length > 0 -%}
+                            {% set options = preferred_choices %}
+                            {% set render_preferred_choices = true %}
+                            {{- block('choice_widget_options') -}}
+                            {%- if choices|length > 0 and separator is not none -%}
+                                <option disabled="disabled">{{ separator }}</option>
+                            {%- endif -%}
+                        {%- endif -%}
+                        {%- set options = choices -%}
+                        {%- set render_preferred_choices = false -%}
+                        {{- block('choice_widget_options') -}}
+                    </select>
+                {% endif %}
+                <span class="name">{{ block('form_label_name') }}{% if required %}<span class="required-asterisk">*</span>{% endif %}</span>
+            </label>
+        </div>
+    {% endif %}
+{%- endblock choice_widget -%}
+
+{%- block choice_multiple_widget -%}
+    <div class="comp-choice-multiple">
+        <label class="choice-multiple-input">
+            <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                {%- if placeholder is not none -%}
+                    <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+                {%- endif -%}
+                {%- if preferred_choices|length > 0 -%}
+                    {% set options = preferred_choices %}
+                    {% set render_preferred_choices = true %}
+                    {{- block('choice_widget_options') -}}
+                    {%- if choices|length > 0 and separator is not none -%}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {%- endif -%}
+                {%- endif -%}
+                {%- set options = choices -%}
+                {%- set render_preferred_choices = false -%}
+                {{- block('choice_widget_options') -}}
+            </select>
+            <span class="name">{{ block('form_label_name') }}{% if required %}<span class="required-asterisk">*</span>{% endif %}</span>
+        </label>
+    </div>
+{%- endblock -%}
+
+{%- block buttonlink_widget -%}
+
+    <a href="{{ path(route) }}">
+        {{ block('button_widget') }}
+    </a>
+
+{%- endblock -%}
+
+{%- block checkbox_widget -%}
+
+    <div class="comp-checkbox">
+        <label class="checkbox-input {{attr["data-parent-class"] | default("")}}">
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            <span class="checkbox"></span>
+            <span class="name">{{ block('form_label_name') }}</span>
+        </label>
+    </div>
+
+{%- endblock -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <span class="error typo-small">{{ errors[0].message }}</span>
+    {%- endif -%}
+{%- endblock form_errors -%}

@@ -1,0 +1,94 @@
+@use "../abstracts" as a;
+
+button {
+
+	cursor: pointer;
+	border: 1px solid;
+	padding: 1em 2em;
+	transition: .4s;
+
+	&.primary {
+		background: a.$primary;
+		color: a.$primaryContrast;
+		border-color: a.$primary;
+
+		&:hover,
+		&:focus {
+			background: a.$secondary;
+			color: a.$secondaryContrast;
+			border-color: a.$secondaryContrast;
+		}
+	}
+
+	&.primary-contrast {
+		background: a.$primaryContrast;
+		color: a.$primary;
+		border-color: a.$primary;
+
+		&:hover,
+		&:focus {
+			background: a.$secondaryContrast;
+			color: a.$secondary;
+			border-color: a.$secondary;
+		}
+	}
+
+	&.secondary {
+		background: a.$secondary;
+		color: a.$secondaryContrast;
+		border-color: a.$secondary;
+
+		&:hover,
+		&:focus {
+			background: a.$primary;
+			color: a.$primaryContrast;
+			border-color: a.$primaryContrast;
+		}
+	}
+
+	&.secondary-contrast {
+		background: a.$secondaryContrast;
+		color: a.$secondary;
+		border-color: a.$secondaryContrast;
+
+		&:hover,
+		&:focus {
+			background: a.$primaryContrast;
+			color: a.$primary;
+			border-color: a.$primary;
+		}
+	}
+
+	&.neutral {
+		background: a.$neutral;
+		color: a.$secondary;
+		border-color: a.$neutral;
+
+		&:hover,
+		&:focus {
+			background: a.$secondary;
+			color: a.$neutral;
+			border-color: a.$secondary;
+		}
+	}
+
+	&.transparent {
+		background: transparent;
+		color: a.$neutral;
+		border-color: a.$neutral;
+
+		&:hover,
+		&:focus {
+			background: a.$neutral;
+			color: a.$secondary;
+			border-color: a.$neutral;
+		}
+	}
+
+	&[disabled] {
+		transition: .4s;
+		opacity: .5;
+		filter: saturate(0);
+	}
+
+}

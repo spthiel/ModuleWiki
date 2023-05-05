@@ -16,8 +16,10 @@
             <dt>Added in</dt>
             <dd><a href="{{ path('moduleChangelog', {"module": module.name}) }}#{{ element.since.name }}">{{ element.since.name }}</a></dd>
         </dl>
-        <div>
-            {{ element.description | escape("html") | markdown_to_html }}
+        <div id="desc"
+                {{ stimulus_controller('editable', {loadUrl: path('apiDescription', {element: element.id}), saveUrl: "save"}) }}
+                {{ stimulus_action('editable', 'open', 'click') }}>
+            {{ element.formatDescription | raw }}
         </div>
     </div>
 {% endblock %}

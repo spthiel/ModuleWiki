@@ -1,0 +1,40 @@
+@use "../abstracts" as a;
+
+.comp-textarea {
+
+
+	.textarea-input {
+
+		display: flex;
+		flex-direction: column-reverse;
+
+		textarea {
+
+			border: a.$borderWidth solid a.$primary;
+			border-radius: 0;
+			outline: none;
+			resize: none;
+			flex-grow: 1;
+			height: auto;
+			font-size: 1em;
+			transition: border-color .3s, color .3s;
+
+			&:focus {
+				border-color: a.$secondary;
+				color: a.$secondary;
+
+				+ .name {
+					color: a.$secondary;
+				}
+			}
+
+		}
+
+		.name {
+			font-size: .8em;
+			color: a.$primary;
+			transition: color .3s;
+		}
+	}
+
+}

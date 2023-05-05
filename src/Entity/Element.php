@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Michelf\MarkdownExtra;
 
 #[ORM\Entity(repositoryClass: ElementRepository::class)]
 class Element
@@ -271,5 +272,14 @@ class Element
         $this->shortDescription = $shortDescription;
 
         return $this;
+    }
+
+    public function formatDescription(): string
+    {
+        $parser = new MarkdownExtra();
+        $parser->hard_wrap = true;
+        $parser->code_class_prefix = "language-";
+        $parser->code_block_content_func = $parser->code_span_content_func = fn($input) =>$input;
+        return str_replace("<code", "<code data-highlight-target=\"code\"", $parser->transform(htmlspecialchars($this->getDescription())));
     }
 }

@@ -157,7 +157,7 @@ nodejs_version: "16"
 # The mailhog port is not normally bound on the host at all, instead being routed
 # through ddev-router, but it can be bound directly to localhost if specified here.
 
-# webimage_extra_packages: [php7.4-tidy, php-bcmath]
+webimage_extra_packages: ["screen"]
 # Extra Debian packages that are needed in the webimage can be added here
 
 # dbimage_extra_packages: [telnet,netcat]
@@ -239,8 +239,9 @@ nodejs_version: "16"
 # and you can't erase existing hooks or all environment variables.
 # However, with "override_config: true" in a particular config.*.yaml file,
 # 'nfs_mount_enabled: false' can override the existing values, and
-# hooks:
-#   post-start: []
+hooks:
+  post-start:
+  - exec: "npm run screen"
 # or
 # web_environment: []
 # or

@@ -16,7 +16,7 @@ class ModuleController extends AbstractController
 {
 
 
-    #[Route('/{type}/', name: "ListElement")]
+    #[Route('/{type}', name: "ListElement")]
     public function listElements(
         #[MapEntity(mapping: ['module' => 'name'])] Module $module,
         #[MapEntity(mapping: ['type' => 'name'])] Type $type = null
@@ -27,7 +27,7 @@ class ModuleController extends AbstractController
             $type = $module->getTypes()->first();
         }
 
-        return $this->render('views/Module/listElements.html.twig', [
+        return $this->render('templates/Module/listElements.html.twig', [
             'module' => $module,
             'type' => $type
         ]);
@@ -71,13 +71,13 @@ class ModuleController extends AbstractController
             ]);
         }
 
-        return $this->render('views/Module/showElement.html.twig', [
+        return $this->render('templates/Module/showElement.html.twig', [
             'module' => $module,
             'element' => $elementObject
         ]);
     }
 
-    #[Route('/', name: "Changelog")]
+    #[Route('/changelog', name: "Changelog")]
     public function changelog(
         #[MapEntity(mapping: ['module' => 'name'])] Module $module
     ): Response

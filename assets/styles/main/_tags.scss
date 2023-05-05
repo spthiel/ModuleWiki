@@ -1,0 +1,9 @@
+@use "../abstracts" as a;
+
+a {
+    color: a.$secondary;
+}
+
+a:hover {
+    color: lighten(a.$secondary, 10);
+}

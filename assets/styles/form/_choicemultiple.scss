@@ -1,0 +1,49 @@
+@use "../abstracts" as a;
+
+.comp-choice-multiple {
+
+	.choice-multiple-input {
+
+		display: flex;
+		flex-direction: column-reverse;
+		position: relative;
+
+		select {
+
+			border: a.$borderWidth solid a.$primary;
+			border-radius: 0;
+			outline: none;
+			flex-grow: 1;
+			background: white;
+			font-size: 1em;
+			color: a.$primary;
+			transition: border-color .3s, color .3s;
+
+			&:focus {
+				border-color: a.$secondary;
+				color: a.$secondary;
+
+				+ .name {
+					color: a.$secondary;
+
+				}
+			}
+
+
+		}
+
+		.name {
+			transition: color .3s;
+			font-size: .8em;
+			color: a.$primary;
+		}
+	}
+
+
+	.inverse {
+
+		& + .name {
+			color: lighten(a.$inactive, 20%);
+		}
+	}
+}

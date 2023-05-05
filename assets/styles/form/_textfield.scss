@@ -1,0 +1,134 @@
+@use "../abstracts" as a;
+
+.text-input {
+
+ 	[disabled] {
+		color: a.$inactive;
+		background: transparent;
+		cursor: not-allowed;
+
+		&+.line {
+
+			.name {
+				color: a.$inactive;
+			}
+
+			&:after {
+				background: a.$inactive;
+			}
+		}
+
+	}
+
+	position: relative;
+	margin-top: .8em;
+	display: flex;
+
+	span {
+		pointer-events: none;
+		user-select: none;
+	}
+
+	input, .name {
+		font-size: 1em;
+	}
+
+	input {
+		outline: none;
+		border: none;
+		color: a.$primary;
+		border-bottom: a.$borderWidth solid a.$secondary;
+		flex-grow: 1;
+		min-width: 0;
+	}
+
+	.name {
+		position: absolute;
+		transform: translate(0, -50%);
+		top: 50%;
+		left: .2em;
+		color: a.$inactive;
+		transition: .3s color, .3s top, .3s color, .3s font-size;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		max-width: 100%;
+	}
+
+	input:focus + span,
+	input:not(:placeholder-shown) + span {
+		.name {
+			font-size: .8em;
+			top: -.4em;
+			color: a.$primary;
+		}
+	}
+
+	input {
+
+		&:focus {
+			color: a.$secondary;
+		}
+
+		&:focus + span {
+			&:after {
+				left: 100%;
+			}
+
+			.name {
+				color: a.$secondary;
+			}
+		}
+
+		&.touched:not(:focus):invalid {
+			color: a.$error;
+		}
+
+		&.touched:not(:focus):invalid + span {
+			&:before {
+				right: 0;
+			}
+			&:after {
+				left: 100%;
+			}
+			.name {
+				color: a.$error;
+			}
+		}
+	}
+
+	.inverse {
+		color: a.$neutral;
+		background: a.$primary;
+
+		& + .line .name {
+			color: lighten(a.$inactive, 20%);
+		}
+
+		& + .line:after {
+			background: a.$neutral;
+		}
+	}
+
+	.line:before,
+	.line:after {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		height: a.$borderWidth;
+		transition: .3s left, .3s right;
+	}
+
+	.line:not(:focus):before {
+		left: 0;
+		right: 100%;
+		background: a.$error;
+	}
+
+	.line:after {
+		left: 0;
+		right: 0;
+		background: a.$primary;
+	}
+
+}

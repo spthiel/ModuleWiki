@@ -13,13 +13,14 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body {{ stimulus_controller('expander') }}>
+    <body {{ stimulus_controller('highlight') }}>
         <nav class="navigation">
             <h1 class="navigation__brand">{%- block header -%}{%- endblock -%}</h1>
             <div class="navigation__links">
                 {% block navigation %}{% endblock %}
             </div>
         </nav>
+        <div class="p-2"></div>
         <main>
             {% block body %}{% endblock %}
         </main>
