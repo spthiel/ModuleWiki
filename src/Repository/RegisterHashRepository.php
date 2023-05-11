@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\RegisterHash;
+use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,8 +16,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method RegisterHash[]    findAll()
  * @method RegisterHash[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RegisterHashRepository extends ServiceEntityRepository
+class RegisterHashRepository extends FlushableRepository
 {
+
+    public const HASH_LIFETIME_DAYS = 7;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RegisterHash::class);
@@ -37,6 +42,27 @@ class RegisterHashRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function cleanHashes(User $user) {
+
+        $timestamp = new DateTime(sprintf("-%d days", self::HASH_LIFETIME_DAYS));
+
+        $builder = $this->createQueryBuilder("hash");
+        $builder
+            ->delete()
+            ->where($builder->expr()->lt('hash.timestamp',  $timestamp))
+            ->getQuery()
+            ->execute();
+    }
+
+    public function removeByUser(User $user) {
+        $builder = $this->createQueryBuilder("hash");
+        $builder
+            ->delete()
+            ->where($builder->expr()->eq('hash.user', $user))
+            ->getQuery()
+            ->execute();
     }
 
 //    /**

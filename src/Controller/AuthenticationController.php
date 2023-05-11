@@ -24,8 +24,8 @@ class AuthenticationController extends AbstractController
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly RegisterHashRepository $registerHashRepository,
-//        private readonly UserService $userService,
-//        private readonly FormService $formService
+        private readonly UserService $userService,
+        private readonly FormService $formService
     )
     {
     }
@@ -35,11 +35,7 @@ class AuthenticationController extends AbstractController
     {
 
         if ($this->getUser()) {
-            return $this->redirectToRoute('timesheet');
-        }
-
-        if (!$this->isInstalled()) {
-            return $this->redirectToRoute('authInstall');
+            return $this->redirectToRoute('list');
         }
 
         $form = $this->createForm(LoginType::class);
@@ -47,7 +43,7 @@ class AuthenticationController extends AbstractController
 
         $form->setData(['username' => $authenticationUtils->getLastUsername()]);
 
-        return $this->render('templates/auth/login.html.twig', [
+        return $this->render('templates/Authentication/login.html.twig', [
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'form' => $form
         ]);

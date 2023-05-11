@@ -8,6 +8,8 @@ use App\Entity\Type;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
@@ -15,6 +17,10 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 class ModuleController extends AbstractController
 {
 
+    public function __construct(
+    )
+    {
+    }
 
     #[Route('/{type}', name: "ListElement")]
     public function listElements(
@@ -22,6 +28,8 @@ class ModuleController extends AbstractController
         #[MapEntity(mapping: ['type' => 'name'])] Type $type = null
     ): Response
     {
+
+
 
         if ($type === null) {
             $type = $module->getTypes()->first();

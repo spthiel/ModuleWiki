@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Changelog[]    findAll()
  * @method Changelog[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ChangelogRepository extends ServiceEntityRepository
+class ChangelogRepository extends FlushableRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

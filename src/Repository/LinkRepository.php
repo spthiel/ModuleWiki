@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Link[]    findAll()
  * @method Link[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class LinkRepository extends ServiceEntityRepository
+class LinkRepository extends FlushableRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

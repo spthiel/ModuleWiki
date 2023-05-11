@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Version[]    findAll()
  * @method Version[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VersionRepository extends ServiceEntityRepository
+class VersionRepository extends FlushableRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
