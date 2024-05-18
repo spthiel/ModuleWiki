@@ -10,5 +10,9 @@ import './styles/app.scss';
 
 import 'highlight.js/styles/monokai-sublime.css';
 
+import hljs from "highlight.js";
+import mkb from "./mkb";
+
+hljs.registerLanguage("mkb", mkb);
 // start the Stimulus application
 import './bootstrap';

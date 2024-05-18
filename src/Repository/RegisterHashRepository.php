@@ -44,7 +44,7 @@ class RegisterHashRepository extends FlushableRepository
         }
     }
 
-    public function cleanHashes(User $user) {
+    public function cleanHashes() {
 
         $timestamp = new DateTime(sprintf("-%d days", self::HASH_LIFETIME_DAYS));
 

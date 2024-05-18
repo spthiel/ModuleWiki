@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\LoginType;
+use App\Form\RegisterType;
 use App\Form\SetPasswordType;
 use App\Form\UserType;
 use App\Repository\RegisterHashRepository;
@@ -11,10 +12,11 @@ use App\Repository\UserRepository;
 use App\Service\FormService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route("", name: "auth")]
@@ -51,10 +53,9 @@ class AuthenticationController extends AbstractController
     }
 
     #[Route('/logout', name: 'Logout')]
-    public function logout(): Response
+    public function logout(Security $security): Response
     {
-
-        return $this->redirectToRoute('authLogin');
+        return $this->redirectToRoute('list');
     }
 
     #[Route('/register/{hash}', name: 'Password')]
@@ -67,7 +68,7 @@ class AuthenticationController extends AbstractController
         $this->registerHashRepository->cleanHashes();
 
         if ($this->getUser()) {
-            return $this->redirectToRoute('timesheet');
+            return $this->redirectToRoute('');
         }
 
         $registerHash = $this->registerHashRepository->findOneByHash($hash);
@@ -115,15 +116,11 @@ class AuthenticationController extends AbstractController
         ]);
     }
 
-    #[Route('/install', name: "Install")]
-    public function createFirstUser(Request $request): Response
+    #[Route('/register', name: "Register")]
+    public function register(Request $request): Response
     {
 
-        if ($this->isInstalled()) {
-            return $this->redirectToRoute($this->getUser() ? 'timesheet' : 'authLogin');
-        }
-
-        [$response, $value] = $this->formService->handleCreateForm($request, UserType::class, User::class);
+        [$response, $value] = $this->formService->processForm($request, RegisterType::class, null);
 
         if ($response)  {
             $value->setPermissions(1);
@@ -131,7 +128,7 @@ class AuthenticationController extends AbstractController
             return $this->redirectToRoute("authPassword", ["hash" => $hash->getHash()]);
         }
 
-        return $this->render("templates/management/userShow.html.twig", [
+        return $this->render("templates/Authentication/register.html.twig", [
             "form" => $value
         ]);
     }

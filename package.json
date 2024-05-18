@@ -4,7 +4,7 @@
         "@babel/preset-env": "^7.16.0",
         "@ckeditor/ckeditor5-dev-utils": "^37.0.1",
         "@hotwired/stimulus": "^3.0.0",
-        "@hotwired/turbo": "^7.0.1",
+        "@hotwired/turbo": "^7.1.1 || ^8.0",
         "@symfony/stimulus-bridge": "^3.2.0",
         "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
         "@symfony/webpack-encore": "^4.0.0",
@@ -13,7 +13,10 @@
         "highlight.js": "^11.7.0",
         "highlightjs-mkb": "github:Dereavy/highlightjs-mkb",
         "regenerator-runtime": "^0.13.9",
-        "tailwindcss": "^3.2.4"
+        "tailwindcss": "^3.2.4",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-notifier": "^1.15.0"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -23,5 +26,12 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "postcss": "^8.4.38",
+        "sass": "^1.77.2",
+        "sass-loader": "^14.2.1",
+        "ts-loader": "^9.5.1",
+        "typescript": "^5.4.5"
     }
 }

@@ -14,14 +14,23 @@
         {% endblock %}
     </head>
     <body {{ stimulus_controller('highlight') }}>
-        <nav class="navigation">
+        <nav class="flex flex-row justify-between items-center text-lg px-2">
             <h1 class="navigation__brand">{%- block header -%}{%- endblock -%}</h1>
             <div class="navigation__links">
                 {% block navigation %}{% endblock %}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% set href = path("authLogout")%}
+                    {% set title = "Logout" %}
+                    {{ block("navigation_item") }}
+                {% else %}
+                    {% set href = path("authLogin")%}
+                    {% set title = "Login" %}
+                    {{ block("navigation_item") }}
+                {% endif %}
             </div>
         </nav>
         <div class="p-2"></div>
-        <main>
+        <main class="max-w-2xl mx-auto">
             {% block body %}{% endblock %}
         </main>
     </body>

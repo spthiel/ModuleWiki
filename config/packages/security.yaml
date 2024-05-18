@@ -22,7 +22,7 @@ security:
                 username_parameter: login[username]
                 password_parameter: login[password]
             logout:
-                path: userLogout
+                path: authLogout
 
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
